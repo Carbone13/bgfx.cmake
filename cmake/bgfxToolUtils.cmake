@@ -47,15 +47,15 @@ function(bgfx_compile_binary_to_header)
 	set(multiValueArgs "")
 	cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}")
 	_bgfx_bin2c_parse(
-		CLI
-		INPUT_FILE ${ARG_INPUT_FILE}
-		OUTPUT_FILE ${ARG_OUTPUT_FILE}
-		ARRAY_NAME ${ARG_ARRAY_NAME}
+			CLI
+			INPUT_FILE ${ARG_INPUT_FILE}
+			OUTPUT_FILE ${ARG_OUTPUT_FILE}
+			ARRAY_NAME ${ARG_ARRAY_NAME}
 	)
 	add_custom_command(
-		OUTPUT ${ARG_OUTPUT_FILE} #
-		COMMAND bgfx::bin2c ${CLI} #
-		MAIN_DEPENDENCY ${ARG_INPUT_FILE} #
+			OUTPUT ${ARG_OUTPUT_FILE} #
+			COMMAND bgfx::bin2c ${CLI} #
+			MAIN_DEPENDENCY ${ARG_INPUT_FILE} #
 	)
 endfunction()
 
@@ -80,11 +80,11 @@ endfunction()
 # )
 function(_bgfx_texturec_parse ARG_OUT)
 	cmake_parse_arguments(
-		ARG #
-		"MIPS;NORMALMAP;EQUIRECT;STRIP;SDF;IQA;PMA;LINEAR" #
-		"FILE;OUTPUT;FORMAT;QUALITY;MIPSKIP;REF;MAX;RADIANCE;AS" #
-		"" #
-		${ARGN} #
+			ARG #
+			"MIPS;NORMALMAP;EQUIRECT;STRIP;SDF;IQA;PMA;LINEAR" #
+			"FILE;OUTPUT;FORMAT;QUALITY;MIPSKIP;REF;MAX;RADIANCE;AS" #
+			"" #
+			${ARGN} #
 	)
 	set(CLI "")
 
@@ -198,17 +198,17 @@ endfunction()
 #
 function(bgfx_compile_texture)
 	cmake_parse_arguments(
-		ARG #
-		"MIPS;NORMALMAP;EQUIRECT;STRIP;SDF;IQA;PMA;LINEAR" #
-		"FILE;OUTPUT;FORMAT;QUALITY;MIPSKIP;REF;MAX;RADIANCE;AS" #
-		"" #
-		${ARGN} #
+			ARG #
+			"MIPS;NORMALMAP;EQUIRECT;STRIP;SDF;IQA;PMA;LINEAR" #
+			"FILE;OUTPUT;FORMAT;QUALITY;MIPSKIP;REF;MAX;RADIANCE;AS" #
+			"" #
+			${ARGN} #
 	)
 	_bgfx_texturec_parse(CLI ${ARGV})
 	add_custom_command(
-		OUTPUT ${ARG_OUTPUT} #
-		COMMAND bgfx::texturec ${CLI} #
-		MAIN_DEPENDENCY ${ARG_INPUT} #
+			OUTPUT ${ARG_OUTPUT} #
+			COMMAND bgfx::texturec ${CLI} #
+			MAIN_DEPENDENCY ${ARG_INPUT} #
 	)
 endfunction()
 
@@ -228,11 +228,11 @@ endfunction()
 # )
 function(_bgfx_geometryc_parse ARG_OUT)
 	cmake_parse_arguments(
-		ARG #
-		"CCW;FLIPV;TANGENT;BARYCENTRIC;COMPRESS;LH_UP_Y;LH_UP_Z;RH_UP_Y;RH_UP_Z" #
-		"FILE;OUTPUT;SCALE;OBB;PACKNORMAL;PACKUV" #
-		"" #
-		${ARGN} #
+			ARG #
+			"CCW;FLIPV;TANGENT;BARYCENTRIC;COMPRESS;LH_UP_Y;LH_UP_Z;RH_UP_Y;RH_UP_Z" #
+			"FILE;OUTPUT;SCALE;OBB;PACKNORMAL;PACKUV" #
+			"" #
+			${ARGN} #
 	)
 	set(CLI "")
 
@@ -331,17 +331,17 @@ endfunction()
 #
 function(bgfx_compile_geometry)
 	cmake_parse_arguments(
-		ARG #
-		"CCW;FLIPV;TANGENT;BARYCENTRIC;COMPRESS;LH_UP_Y;LH_UP_Z;RH_UP_Y;RH_UP_Z" #
-		"FILE;OUTPUT;SCALE;OBB;PACKNORMAL;PACKUV" #
-		"" #
-		${ARGN} #
+			ARG #
+			"CCW;FLIPV;TANGENT;BARYCENTRIC;COMPRESS;LH_UP_Y;LH_UP_Z;RH_UP_Y;RH_UP_Z" #
+			"FILE;OUTPUT;SCALE;OBB;PACKNORMAL;PACKUV" #
+			"" #
+			${ARGN} #
 	)
 	_bgfx_geometryc_parse(CLI ${ARGV})
 	add_custom_command(
-		OUTPUT ${ARG_OUTPUT} #
-		COMMAND bgfx::geometryc ${CLI} #
-		MAIN_DEPENDENCY ${ARG_INPUT} #
+			OUTPUT ${ARG_OUTPUT} #
+			COMMAND bgfx::geometryc ${CLI} #
+			MAIN_DEPENDENCY ${ARG_INPUT} #
 	)
 endfunction()
 
@@ -366,11 +366,11 @@ endfunction()
 # )
 function(_bgfx_shaderc_parse ARG_OUT)
 	cmake_parse_arguments(
-		ARG
-		"DEPENDS;ANDROID;ASM_JS;IOS;LINUX;NACL;OSX;WINDOWS;PREPROCESS;RAW;FRAGMENT;VERTEX;COMPUTE;VERBOSE;DEBUG;DISASM;WERROR"
-		"FILE;OUTPUT;VARYINGDEF;BIN2C;PROFILE;O"
-		"INCLUDES;DEFINES"
-		${ARGN}
+			ARG
+			"DEPENDS;ANDROID;ASM_JS;IOS;LINUX;NACL;OSX;WINDOWS;PREPROCESS;RAW;FRAGMENT;VERTEX;COMPUTE;VERBOSE;DEBUG;DISASM;WERROR"
+			"FILE;OUTPUT;VARYINGDEF;BIN2C;PROFILE;O"
+			"INCLUDES;DEFINES"
+			${ARGN}
 	)
 	set(CLI "")
 
@@ -554,10 +554,10 @@ function(bgfx_compile_shader_to_header)
 		set(PLATFORM OSX)
 		list(APPEND PROFILES metal)
 	elseif(
-		WIN32
-		OR MINGW
-		OR MSYS
-		OR CYGWIN
+			WIN32
+			OR MINGW
+			OR MSYS
+			OR CYGWIN
 	)
 		set(PLATFORM WINDOWS)
 		if(ARGS_TYPE STREQUAL "VERTEX" OR ARGS_TYPE STREQUAL "FRAGMENT")
@@ -591,15 +591,15 @@ function(bgfx_compile_shader_to_header)
 				set(PLATFORM_I LINUX)
 			endif()
 			_bgfx_shaderc_parse(
-				CLI #
-				${ARGS_TYPE} ${PLATFORM_I} WERROR "$<$<CONFIG:debug>:DEBUG>$<$<CONFIG:relwithdebinfo>:DEBUG>"
-				FILE ${SHADER_FILE_ABSOLUTE}
-				OUTPUT ${OUTPUT}
-				PROFILE ${PROFILE}
-				O "$<$<CONFIG:debug>:0>$<$<CONFIG:release>:3>$<$<CONFIG:relwithdebinfo>:3>$<$<CONFIG:minsizerel>:3>"
-				VARYINGDEF ${ARGS_VARYING_DEF}
-				INCLUDES ${BGFX_SHADER_INCLUDE_PATH} ${ARGS_INCLUDE_DIRS}
-				BIN2C BIN2C ${SHADER_FILE_NAME_WE}_${PROFILE_EXT}
+					CLI #
+					${ARGS_TYPE} ${PLATFORM_I} WERROR "$<$<CONFIG:debug>:DEBUG>$<$<CONFIG:relwithdebinfo>:DEBUG>"
+					FILE ${SHADER_FILE_ABSOLUTE}
+					OUTPUT ${OUTPUT}
+					PROFILE ${PROFILE}
+					O "$<$<CONFIG:debug>:0>$<$<CONFIG:release>:3>$<$<CONFIG:relwithdebinfo>:3>$<$<CONFIG:minsizerel>:3>"
+					VARYINGDEF ${ARGS_VARYING_DEF}
+					INCLUDES ${BGFX_SHADER_INCLUDE_PATH} ${ARGS_INCLUDE_DIRS}
+					BIN2C BIN2C ${SHADER_FILE_NAME_WE}_${PROFILE_EXT}
 			)
 			list(APPEND OUTPUTS ${OUTPUT})
 			list(APPEND COMMANDS COMMAND $<TARGET_FILE:shaderc> ${CLI})
@@ -609,10 +609,10 @@ function(bgfx_compile_shader_to_header)
 		endif()
 
 		add_custom_command(
-			OUTPUT ${OUTPUTS}
-			COMMAND ${CMAKE_COMMAND} -E make_directory ${ARGS_OUTPUT_DIR} ${COMMANDS}
-			MAIN_DEPENDENCY ${SHADER_FILE_ABSOLUTE}
-			DEPENDS ${ARGS_VARYING_DEF}
+				OUTPUT ${OUTPUTS}
+				COMMAND ${CMAKE_COMMAND} -E make_directory ${ARGS_OUTPUT_DIR} ${COMMANDS}
+				MAIN_DEPENDENCY ${SHADER_FILE_ABSOLUTE}
+				DEPENDS ${ARGS_VARYING_DEF}
 		)
 	endforeach()
 endfunction()
